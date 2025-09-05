@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import ResumeAnalysis from './ResumeAnalysis';
-import ParticleBackground from './ParticleBackground';
 import { 
   TrendingUp, 
   Users, 
@@ -19,9 +18,12 @@ import {
   Target,
   Brain,
   Eye,
-  ArrowRight
+  ArrowRight,
+  CheckCircle,
+  AlertCircle,
+  FileText,
+  Building
 } from 'lucide-react';
-
 
 const demoResumes = [
   {
@@ -50,7 +52,7 @@ const Dashboard: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showResumeAnalysis, setShowResumeAnalysis] = useState(false);
   const [showDemoResumes, setShowDemoResumes] = useState(false);
-  const [isSignedIn, setIsSignedIn] = useState(true); // Replace with real auth logic
+  const [isSignedIn, setIsSignedIn] = useState(true);
   const navigate = useNavigate();
 
   const stats = [
@@ -58,29 +60,33 @@ const Dashboard: React.FC = () => {
       title: 'Active Applications',
       value: '3',
       change: '+2 this month',
-      icon: Users,
-      color: 'blue'
+      icon: FileText,
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-50'
     },
     {
       title: 'Interview Scheduled',
       value: '1',
       change: 'Tomorrow at 2:00 PM',
       icon: Calendar,
-      color: 'green'
+      color: 'text-green-600',
+      bgColor: 'bg-green-50'
     },
     {
       title: 'Profile Views',
       value: '47',
       change: '+12 this week',
       icon: TrendingUp,
-      color: 'purple'
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-50'
     },
     {
       title: 'Achievements',
       value: '2',
       change: 'Certificates earned',
       icon: Award,
-      color: 'yellow'
+      color: 'text-orange-600',
+      bgColor: 'bg-orange-50'
     }
   ];
 
@@ -94,7 +100,8 @@ const Dashboard: React.FC = () => {
       duration: '6 months',
       deadline: '15 Dec 2024',
       rating: 4.8,
-      applied: false
+      applied: false,
+      type: 'Full-time'
     },
     {
       id: 2,
@@ -105,7 +112,8 @@ const Dashboard: React.FC = () => {
       duration: '3 months',
       deadline: '20 Dec 2024',
       rating: 4.5,
-      applied: true
+      applied: true,
+      type: 'Part-time'
     },
     {
       id: 3,
@@ -116,7 +124,8 @@ const Dashboard: React.FC = () => {
       duration: '6 months',
       deadline: '25 Dec 2024',
       rating: 4.9,
-      applied: false
+      applied: false,
+      type: 'Full-time'
     }
   ];
 
@@ -125,25 +134,27 @@ const Dashboard: React.FC = () => {
       title: 'Interview - Tech Solutions',
       date: 'Dec 10, 2024',
       time: '2:00 PM',
-      type: 'interview'
+      type: 'interview',
+      status: 'confirmed'
     },
     {
       title: 'Webinar: Resume Building',
       date: 'Dec 12, 2024',
       time: '4:00 PM',
-      type: 'webinar'
+      type: 'webinar',
+      status: 'registered'
     },
     {
       title: 'Application Deadline',
       date: 'Dec 15, 2024',
       time: '11:59 PM',
-      type: 'deadline'
+      type: 'deadline',
+      status: 'pending'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex">
-      <ParticleBackground />
+    <div className="min-h-screen bg-gray-50 flex">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       
       <div className="flex-1 md:ml-0">
@@ -151,37 +162,52 @@ const Dashboard: React.FC = () => {
         
         <main className="p-6">
           {/* Welcome Section */}
-          <div className="glass-card p-8 mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">
-              Welcome back, John! 👋
-            </h1>
-            <p className="text-white/70">
-              Here's what's happening with your internship applications today.
-            </p>
+          <div className="gov-card p-8 mb-8">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold gov-text-primary mb-2">
+                  Welcome back, John Doe
+                </h1>
+                <p className="gov-text-secondary">
+                  Student ID: PM2024001 | Here's your internship dashboard overview
+                </p>
+              </div>
+              <div className="text-right">
+                <div className="gov-badge-green mb-2">
+                  Profile: 85% Complete
+                </div>
+                <p className="text-sm gov-text-muted">Last login: Today, 9:30 AM</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Important Notice */}
+          <div className="gov-alert-info mb-8">
+            <div className="flex items-start">
+              <AlertCircle className="h-5 w-5 mr-3 mt-0.5" />
+              <div>
+                <h3 className="font-medium mb-1">Important Notice</h3>
+                <p className="text-sm">New internship opportunities have been added. Complete your profile to get better matches.</p>
+              </div>
+            </div>
           </div>
 
           {/* Stats Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {stats.map((stat, index) => {
               const Icon = stat.icon;
-              const colorClasses = {
-                blue: 'bg-gradient-to-r from-blue-500 to-cyan-500',
-                green: 'bg-gradient-to-r from-green-500 to-emerald-500',
-                purple: 'bg-gradient-to-r from-purple-500 to-pink-500',
-                yellow: 'bg-gradient-to-r from-orange-500 to-amber-500'
-              };
               
               return (
-                <div key={index} className="glass-card p-6 floating-card">
+                <div key={index} className="gov-stats-card">
                   <div className="flex items-center justify-between mb-4">
-                    <div className={`p-3 rounded-xl ${colorClasses[stat.color as keyof typeof colorClasses]} shadow-lg`}>
-                      <Icon className="h-6 w-6 text-white" />
+                    <div className={`p-3 rounded-lg ${stat.bgColor}`}>
+                      <Icon className={`h-6 w-6 ${stat.color}`} />
                     </div>
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-white mb-1">{stat.value}</p>
-                    <p className="text-sm font-medium text-white/80 mb-1">{stat.title}</p>
-                    <p className="text-xs text-white/60">{stat.change}</p>
+                    <p className="text-2xl font-bold gov-text-primary mb-1">{stat.value}</p>
+                    <p className="text-sm font-medium gov-text-secondary mb-1">{stat.title}</p>
+                    <p className="text-xs gov-text-muted">{stat.change}</p>
                   </div>
                 </div>
               );
@@ -191,11 +217,11 @@ const Dashboard: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Recent Internships */}
             <div className="lg:col-span-2">
-              <div className="glass-card">
-                <div className="p-6 border-b border-white/20">
+              <div className="gov-card">
+                <div className="p-6 border-b border-gray-200">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-bold text-white">Latest Opportunities</h2>
-                    <button className="text-orange-400 hover:text-orange-300 text-sm font-medium flex items-center">
+                    <h2 className="text-xl font-bold gov-text-primary">Latest Opportunities</h2>
+                    <button className="gov-accent text-sm font-medium flex items-center hover:underline">
                       View All
                       <ArrowRight className="ml-1 h-4 w-4" />
                     </button>
@@ -204,19 +230,27 @@ const Dashboard: React.FC = () => {
                 
                 <div className="p-6 space-y-6">
                   {recentInternships.map((internship) => (
-                    <div key={internship.id} className="bg-white/5 backdrop-blur-xl border border-white/20 rounded-xl p-4 hover:bg-white/10 transition-all floating-card">
+                    <div key={internship.id} className="border border-gray-200 rounded-lg p-4 hover:border-blue-300 transition-colors">
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
-                          <h3 className="font-semibold text-white mb-1">{internship.title}</h3>
-                          <p className="text-orange-400 text-sm mb-2">{internship.company}</p>
-                          <div className="flex items-center space-x-4 text-sm text-white/60">
+                          <div className="flex items-center space-x-3 mb-2">
+                            <h3 className="font-semibold gov-text-primary">{internship.title}</h3>
+                            <span className={`gov-badge ${internship.type === 'Full-time' ? 'gov-badge-blue' : 'gov-badge-yellow'}`}>
+                              {internship.type}
+                            </span>
+                          </div>
+                          <p className="gov-accent text-sm mb-2 flex items-center">
+                            <Building className="h-4 w-4 mr-1" />
+                            {internship.company}
+                          </p>
+                          <div className="flex items-center space-x-4 text-sm gov-text-muted">
                             <div className="flex items-center">
                               <MapPin className="h-4 w-4 mr-1" />
                               {internship.location}
                             </div>
                             <div className="flex items-center">
                               <DollarSign className="h-4 w-4 mr-1" />
-                              {internship.stipend}
+                              {internship.stipend}/month
                             </div>
                             <div className="flex items-center">
                               <Clock className="h-4 w-4 mr-1" />
@@ -226,22 +260,22 @@ const Dashboard: React.FC = () => {
                         </div>
                         <div className="text-right">
                           <div className="flex items-center mb-2">
-                            <Star className="h-4 w-4 text-yellow-400 mr-1" />
-                            <span className="text-sm text-white/70">{internship.rating}</span>
+                            <Star className="h-4 w-4 text-yellow-500 mr-1" />
+                            <span className="text-sm gov-text-secondary">{internship.rating}</span>
                           </div>
                           {internship.applied ? (
-                            <span className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-xs font-medium border border-green-500/30">
+                            <span className="gov-badge-green">
                               Applied
                             </span>
                           ) : (
-                            <button className="glass-button text-sm px-4 py-2">
+                            <button className="gov-button text-sm px-4 py-2">
                               Apply Now
                             </button>
                           )}
                         </div>
                       </div>
-                      <div className="text-xs text-white/50">
-                        Deadline: {internship.deadline}
+                      <div className="text-xs gov-text-muted">
+                        Application Deadline: {internship.deadline}
                       </div>
                     </div>
                   ))}
@@ -249,12 +283,42 @@ const Dashboard: React.FC = () => {
               </div>
             </div>
 
-            {/* Upcoming Events & Quick Actions */}
+            {/* Sidebar Content */}
             <div className="space-y-6">
+              {/* Resume Upload */}
+              <div className="gov-card p-6 text-center">
+                <div className="mb-4">
+                  <Upload className="h-12 w-12 gov-accent mx-auto mb-3" />
+                  <h3 className="text-lg font-bold gov-text-primary mb-2">Upload Resume</h3>
+                  <p className="text-sm gov-text-secondary mb-4">
+                    Get AI-powered internship matches based on your skills
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowResumeAnalysis(true)}
+                  className="gov-button w-full mb-3"
+                >
+                  Upload & Analyze Resume
+                </button>
+                <button
+                  onClick={() => {
+                    if (!isSignedIn) {
+                      navigate('/signup');
+                    } else {
+                      setShowDemoResumes(true);
+                    }
+                  }}
+                  className="gov-button-secondary w-full"
+                >
+                  <Eye className="h-4 w-4 mr-2 inline" />
+                  View Demo Resumes
+                </button>
+              </div>
+
               {/* Upcoming Events */}
-              <div className="glass-card">
-                <div className="p-6 border-b border-white/20">
-                  <h2 className="text-xl font-bold text-white">Upcoming Events</h2>
+              <div className="gov-card">
+                <div className="p-6 border-b border-gray-200">
+                  <h2 className="text-xl font-bold gov-text-primary">Upcoming Events</h2>
                 </div>
                 
                 <div className="p-6 space-y-4">
@@ -262,10 +326,10 @@ const Dashboard: React.FC = () => {
                     <div key={index} className="flex items-start space-x-3">
                       <div className={`p-2 rounded-lg ${
                         event.type === 'interview' 
-                          ? 'bg-blue-500/20 text-blue-400' 
+                          ? 'bg-blue-50 text-blue-600' 
                           : event.type === 'webinar'
-                          ? 'bg-green-500/20 text-green-400'
-                          : 'bg-red-500/20 text-red-400'
+                          ? 'bg-green-50 text-green-600'
+                          : 'bg-red-50 text-red-600'
                       }`}>
                         {event.type === 'interview' ? (
                           <Users className="h-4 w-4" />
@@ -276,54 +340,35 @@ const Dashboard: React.FC = () => {
                         )}
                       </div>
                       <div className="flex-1">
-                        <p className="text-sm font-medium text-white">{event.title}</p>
-                        <p className="text-xs text-white/60">{event.date} • {event.time}</p>
+                        <p className="text-sm font-medium gov-text-primary">{event.title}</p>
+                        <p className="text-xs gov-text-muted">{event.date} • {event.time}</p>
+                        <span className={`text-xs ${
+                          event.status === 'confirmed' ? 'gov-success' :
+                          event.status === 'registered' ? 'gov-accent' : 'gov-warning'
+                        }`}>
+                          {event.status.charAt(0).toUpperCase() + event.status.slice(1)}
+                        </span>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-
-              {/* Upload Resume Button - Large and Above */}
-              <div className="glass-card mb-6 flex flex-col items-center justify-center p-8">
-                <button
-                  onClick={() => setShowResumeAnalysis(true)}
-                  className="w-full max-w-md glass-button text-xl py-6 font-bold flex items-center justify-center mb-4 shadow-lg rounded-full transition-all duration-200 hover:scale-105"
-                >
-                  <Upload className="h-6 w-6 mr-3" />
-                  Upload Resume & Get AI Matches
-                </button>
-                <button
-                  onClick={() => {
-                    if (!isSignedIn) {
-                      navigate('/signup');
-                    } else {
-                      setShowDemoResumes(true);
-                    }
-                  }}
-                  className="w-full max-w-md glass-button-secondary text-lg py-5 font-semibold flex items-center justify-center shadow-md rounded-full transition-all duration-200 hover:scale-105"
-                >
-                  <Eye className="h-5 w-5 mr-2" />
-                  View Demo Resumes
-                </button>
-              </div>
-
-              {/* Quick Actions - Below Upload Resume */}
-              <div className="glass-card">
-                <div className="p-6 border-b border-white/20">
-                  <h2 className="text-xl font-bold text-white">Quick Actions</h2>
+              {/* Quick Actions */}
+              <div className="gov-card">
+                <div className="p-6 border-b border-gray-200">
+                  <h2 className="text-xl font-bold gov-text-primary">Quick Actions</h2>
                 </div>
-                <div className="p-6 grid grid-cols-2 gap-4">
-                  <button className="glass-button-secondary text-sm py-3 flex items-center justify-center rounded-full">
+                <div className="p-6 space-y-3">
+                  <button className="gov-button-secondary w-full text-sm py-3 flex items-center justify-center">
                     <Eye className="h-4 w-4 mr-2" />
                     Complete Profile
                   </button>
-                  <button className="glass-button-secondary text-sm py-3 flex items-center justify-center rounded-full">
+                  <button className="gov-button-secondary w-full text-sm py-3 flex items-center justify-center">
                     <Target className="h-4 w-4 mr-2" />
                     Browse Internships
                   </button>
-                  <button className="glass-button-secondary text-sm py-3 flex items-center justify-center rounded-full">
+                  <button className="gov-button-secondary w-full text-sm py-3 flex items-center justify-center">
                     <Brain className="h-4 w-4 mr-2" />
                     Schedule Mock Interview
                   </button>
@@ -331,32 +376,32 @@ const Dashboard: React.FC = () => {
               </div>
 
               {/* Progress Card */}
-              <div className="glass-card">
+              <div className="gov-card">
                 <div className="p-6">
-                  <h3 className="font-semibold text-white mb-4">Profile Completion</h3>
+                  <h3 className="font-semibold gov-text-primary mb-4">Profile Completion</h3>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-white/70">Basic Info</span>
-                      <span className="text-green-600 font-medium">100%</span>
+                      <span className="gov-text-secondary">Basic Information</span>
+                      <span className="gov-success font-medium">100%</span>
                     </div>
-                    <div className="w-full bg-white/20 rounded-full h-2">
-                      <div className="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full" style={{width: '100%'}}></div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-white/70">Resume</span>
-                      <span className="text-yellow-600 font-medium">75%</span>
-                    </div>
-                    <div className="w-full bg-white/20 rounded-full h-2">
-                      <div className="bg-gradient-to-r from-yellow-500 to-orange-500 h-2 rounded-full" style={{width: '75%'}}></div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="bg-green-600 h-2 rounded-full" style={{width: '100%'}}></div>
                     </div>
                     
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-white/70">Skills Assessment</span>
-                      <span className="text-red-600 font-medium">25%</span>
+                      <span className="gov-text-secondary">Resume Upload</span>
+                      <span className="gov-warning font-medium">75%</span>
                     </div>
-                    <div className="w-full bg-white/20 rounded-full h-2">
-                      <div className="bg-gradient-to-r from-red-500 to-pink-500 h-2 rounded-full" style={{width: '25%'}}></div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="bg-yellow-500 h-2 rounded-full" style={{width: '75%'}}></div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="gov-text-secondary">Skills Assessment</span>
+                      <span className="gov-error font-medium">25%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="bg-red-500 h-2 rounded-full" style={{width: '25%'}}></div>
                     </div>
                   </div>
                 </div>
@@ -374,31 +419,31 @@ const Dashboard: React.FC = () => {
       {/* Demo Resume Modal */}
       {showDemoResumes && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="glass-card max-w-2xl w-full p-8 relative">
+          <div className="gov-card max-w-2xl w-full p-8 relative">
             <button
               onClick={() => setShowDemoResumes(false)}
-              className="absolute top-4 right-4 glass-button-secondary px-4 py-2 rounded-full"
+              className="absolute top-4 right-4 gov-button-secondary px-4 py-2 rounded-md"
             >
               Close
             </button>
-            <h2 className="text-2xl font-bold text-white mb-6 text-center">Demo Resumes</h2>
+            <h2 className="text-2xl font-bold gov-text-primary mb-6 text-center">Demo Resumes</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {demoResumes.map((resume, idx) => (
-                <div key={idx} className="glass-card p-6">
-                  <h3 className="text-xl font-bold text-orange-400 mb-2">{resume.name}</h3>
-                  <p className="text-white/80 mb-1">{resume.degree} - {resume.college}</p>
-                  <p className="text-white/60 mb-2">{resume.experience}</p>
+                <div key={idx} className="gov-card p-6">
+                  <h3 className="text-xl font-bold gov-accent mb-2">{resume.name}</h3>
+                  <p className="gov-text-secondary mb-1">{resume.degree} - {resume.college}</p>
+                  <p className="gov-text-muted mb-2">{resume.experience}</p>
                   <div className="mb-2">
-                    <span className="font-semibold text-white">Skills:</span>
-                    <ul className="list-disc ml-5 text-white/70">
+                    <span className="font-semibold gov-text-primary">Skills:</span>
+                    <ul className="list-disc ml-5 gov-text-secondary">
                       {resume.skills.map((skill, i) => (
                         <li key={i}>{skill}</li>
                       ))}
                     </ul>
                   </div>
-                  <div className="text-sm text-white/60 mb-1"><strong>Email:</strong> {resume.email}</div>
-                  <div className="text-sm text-white/60 mb-1"><strong>Phone:</strong> {resume.phone}</div>
-                  <div className="text-sm text-white/60 mb-1"><strong>Location:</strong> {resume.location}</div>
+                  <div className="text-sm gov-text-muted mb-1"><strong>Email:</strong> {resume.email}</div>
+                  <div className="text-sm gov-text-muted mb-1"><strong>Phone:</strong> {resume.phone}</div>
+                  <div className="text-sm gov-text-muted mb-1"><strong>Location:</strong> {resume.location}</div>
                 </div>
               ))}
             </div>
